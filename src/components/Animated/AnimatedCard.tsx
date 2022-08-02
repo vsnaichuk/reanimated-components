@@ -5,7 +5,7 @@ import Animated, {
   useAnimatedStyle,
 } from "react-native-reanimated";
 
-import { Card, Cards, StyleGuide } from "./UI";
+import { Card, Cards, StyleGuide } from "../UI";
 
 const { width } = Dimensions.get("window");
 const origin = -(width / 2 - StyleGuide.spacing * 2);

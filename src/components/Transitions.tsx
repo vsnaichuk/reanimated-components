@@ -3,12 +3,11 @@ import { StyleSheet, View } from "react-native";
 
 import { StyleGuide, cards, Button } from "./UI";
 
-import { AnimatedCard } from "./AnimatedCard";
+import { AnimatedCard } from "./Animated/AnimatedCard";
 import {
   useDerivedValue,
   withSpring,
   WithSpringConfig,
-  withTiming,
 } from "react-native-reanimated";
 
 const styles = StyleSheet.create({

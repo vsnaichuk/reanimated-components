@@ -2,12 +2,12 @@ import React from "react";
 import { StyleSheet } from "react-native";
 
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { PanGesture } from "./src/components/PanGesture";
+import { CircularSlider } from "./src/components/CircularSlider";
 
 export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <PanGesture />
+      <CircularSlider />
     </GestureHandlerRootView>
   );
 }

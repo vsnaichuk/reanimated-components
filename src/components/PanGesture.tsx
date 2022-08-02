@@ -12,6 +12,7 @@ import Animated, {
 } from "react-native-reanimated";
 
 import { Card, Cards, CARD_HEIGHT, CARD_WIDTH } from "./UI";
+import { clamp } from '../util'
 
 const { height, width } = Dimensions.get("window");
 
@@ -20,23 +21,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-
-/**
- *  @summary Clamps a node with a lower and upper bound.
- *  @example
-    clamp(-1, 0, 100); // 0
-    clamp(1, 0, 100); // 1
-    clamp(101, 0, 100); // 100
-  * @worklet
-  */
-export const clamp = (
-  value: number,
-  lowerBound: number,
-  upperBound: number
-) => {
-  "worklet";
-  return Math.min(Math.max(lowerBound, value), upperBound);
-};
 
 type ContextProps = {
   offsetX: number;
