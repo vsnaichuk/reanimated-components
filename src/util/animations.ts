@@ -1,4 +1,5 @@
-/* eslint-disable @typescript-eslint/consistent-type-imports */
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
 import type { AnimatableValue, Animation } from "react-native-reanimated";
 import Animated, { defineAnimation } from "react-native-reanimated";
 
@@ -24,6 +25,7 @@ export const withPause = (
         return false;
       }
       const dt = now - elapsed;
+      // Upgrade should fix type errors
       const finished = nextAnimation.onFrame(nextAnimation, dt);
       state.current = nextAnimation.current;
       state.lastTimestamp = dt;
@@ -75,6 +77,16 @@ export const clamp = (
 ) => {
   "worklet";
   return Math.min(Math.max(lowerBound, value), upperBound);
+};
+
+/**
+ * @summary Computes animation node rounded to precision.
+ * @worklet
+ */
+export const round = (value: number, precision = 0) => {
+  "worklet";
+  const p = Math.pow(10, precision);
+  return Math.round(value * p) / p;
 };
 
 /**
@@ -153,4 +165,26 @@ export const polar2Cartesian = (p: PolarPoint) => {
 export const polar2Canvas = (p: PolarPoint, center: Vector) => {
   "worklet";
   return cartesian2Canvas(polar2Cartesian(p), center);
+};
+
+/**
+ * @description Returns the coordinate of a cubic bezier curve. t is the length of the curve from 0 to 1.
+ * cubicBezier(0, p0, p1, p2, p3) equals p0 and cubicBezier(1, p0, p1, p2, p3) equals p3.
+ * p0 and p3 are respectively the starting and ending point of the curve. p1 and p2 are the control points.
+ * @worklet
+ */
+export const cubicBezier = (
+  t: number,
+  from: number,
+  c1: number,
+  c2: number,
+  to: number
+) => {
+  "worklet";
+  const term = 1 - t;
+  const a = 1 * term ** 3 * t ** 0 * from;
+  const b = 3 * term ** 2 * t ** 1 * c1;
+  const c = 3 * term ** 1 * t ** 2 * c2;
+  const d = 1 * term ** 0 * t ** 3 * to;
+  return a + b + c + d;
 };

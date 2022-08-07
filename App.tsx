@@ -2,14 +2,14 @@ import React from "react";
 import { StyleSheet } from "react-native";
 
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { CircularSlider } from "./src/components/CircularSlider";
+import { Graph } from "./src/components/Graph";
 
 //FIXME: https://github.com/software-mansion/react-native-reanimated/issues/3321
 
 export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <CircularSlider />
+      <Graph />
     </GestureHandlerRootView>
   );
 }
