@@ -4,6 +4,8 @@ import { StyleSheet } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { CircularSlider } from "./src/components/CircularSlider";
 
+//FIXME: https://github.com/software-mansion/react-native-reanimated/issues/3321
+
 export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
