@@ -2,14 +2,14 @@ import React from "react";
 import { StyleSheet } from "react-native";
 
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Graph } from "./src/components/Graph";
+import { Profiles } from "./src/components/Profiles";
 
 //FIXME: https://github.com/software-mansion/react-native-reanimated/issues/3321
 
 export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <Graph />
+      <Profiles />
     </GestureHandlerRootView>
   );
 }
