@@ -1,53 +1,87 @@
 import React from "react";
-import { StyleSheet } from "react-native";
-import Animated, { useAnimatedProps } from "react-native-reanimated";
-import Svg, { Circle } from "react-native-svg";
+import { Dimensions, StyleSheet, View } from "react-native";
+import Animated, {
+  Extrapolate,
+  interpolate,
+  useAnimatedStyle,
+} from "react-native-reanimated";
 
-import { StyleGuide } from "../UI";
+const { width } = Dimensions.get("window");
 
-const { PI } = Math;
+const PI = Math.PI;
+const RADIUS = width / 2 - 16;
 
-const AnimatedCircle = Animated.createAnimatedComponent(Circle);
-
-interface CircularProgressProps {
-  theta: Animated.SharedValue<number>;
-  r: number;
-  strokeWidth: number;
+interface HalfCircleProps {
+  color: string;
 }
 
-export const CircularProgress = ({
-  r,
-  strokeWidth,
-  theta,
-}: CircularProgressProps) => {
-  const radius = r - strokeWidth / 2;
-  const circumference = radius * 2 * PI;
-  const animatedProps = useAnimatedProps(() => {
-    return {
-      strokeDashoffset: theta.value * radius,
-    };
-  });
+export const HalfCircle = ({ color }: HalfCircleProps) => {
   return (
-    <Svg width="100%" height="100%" style={StyleSheet.absoluteFill}>
-      <AnimatedCircle
-        animatedProps={animatedProps}
-        cx={r}
-        cy={r}
-        fill="transparent"
-        stroke="white"
-        r={radius}
-        {...{ strokeWidth }}
+    <View
+      style={{
+        width: RADIUS * 2,
+        height: RADIUS,
+        overflow: "hidden",
+      }}
+    >
+      <View
+        style={{
+          backgroundColor: color,
+          width: RADIUS * 2,
+          height: RADIUS * 2,
+          borderRadius: RADIUS,
+        }}
       />
-      <AnimatedCircle
-        animatedProps={animatedProps}
-        cx={r}
-        cy={r}
-        fill="transparent"
-        r={radius}
-        stroke={StyleGuide.palette.primary}
-        strokeDasharray={`${circumference}, ${circumference}`}
-        {...{ strokeWidth }}
-      />
-    </Svg>
+    </View>
+  );
+};
+
+
+interface CircularProgressProps {
+  theta: Animated.DerivedValue<number>;
+  bg: string;
+  fg: string;
+}
+
+export const CircularProgress = ({ theta, bg, fg }: CircularProgressProps) => {
+
+  const transformTopStyles = useAnimatedStyle(() => ({
+    transform: [
+      { translateY: RADIUS / 2 },
+      { rotate: `${theta.value}rad` },
+      { translateY: -RADIUS / 2 }
+    ],
+  }))
+  const transformBottomStyles = useAnimatedStyle(() => ({
+    transform: [
+      { translateY: RADIUS / 2 },
+      { rotate: `${interpolate(theta.value, [PI, 2 * PI], [0, PI], Extrapolate.CLAMP)}rad` },
+      { translateY: -RADIUS / 2 }
+    ],
+  }))
+  const opacityStyles = useAnimatedStyle(() => ({
+    opacity: theta.value < PI ? 1 : 0,
+  }))
+
+  return (
+    <>
+      <View style={{ zIndex: 1 }}>
+        <HalfCircle color={fg} />
+        <Animated.View
+          style={[StyleSheet.absoluteFillObject, transformTopStyles, opacityStyles]}
+        >
+          <HalfCircle color={bg} />
+        </Animated.View>
+      </View>
+
+      <View style={{ transform: [{ rotate: "180deg" }] }}>
+        <HalfCircle color={fg} />
+        <Animated.View
+          style={[StyleSheet.absoluteFillObject, transformBottomStyles]}
+        >
+          <HalfCircle color={bg} />
+        </Animated.View>
+      </View>
+    </>
   );
 };

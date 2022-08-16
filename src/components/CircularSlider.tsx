@@ -8,7 +8,7 @@ import Animated, {
 
 import { canvas2Polar } from "../util";
 import { Cursor } from "./Animated/Cursor";
-import { CircularProgress } from "./Animated/CircularProgress";
+import { CircularProgress } from "./Animated/CircularSvgProgress";
 
 const { width } = Dimensions.get("window");
 const size = width - 32;
@@ -37,6 +37,7 @@ export const CircularSlider = () => {
         <Animated.View style={StyleSheet.absoluteFill}>
           <CircularProgress strokeWidth={STROKE_WIDTH} {...{ theta, r }} />
         </Animated.View>
+
         <Cursor
           strokeWidth={STROKE_WIDTH}
           r={r - STROKE_WIDTH / 2}
